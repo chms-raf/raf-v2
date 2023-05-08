@@ -1,0 +1,78 @@
+
+<launch>
+    <!-- This launch file starts the primary background subsystems:
+            - Robot
+            - Robot's vision subsystem
+            - Scene camera
+            - Planning scene
+    -->
+
+    <!-- Arguments List. Change in top-level launch file only.-->
+    <arg name="IP_ADDRESS"          default="137.148.209.35"/>
+    <arg name="robot_name"          default="my_gen3"/>
+    <arg name="use_rviz"            default="false"/>
+    <arg name="use_scene_cam"       default="false"/>
+    <arg name="use_scene"           default="false"/>
+    <arg name="scene_file"          default="$(find raf)/rviz/wheelchair.scene"/> 
+    <arg name="scene_camera_name"   default="scene_camera"/>
+    <arg name="hard_limits"         default="false"/>
+
+    <!--Launch the Kortex Driver-->
+    <include file="$(find kortex_driver)/launch/kortex_driver.launch">
+        <arg name="dof" value="6"/>
+        <arg name="gripper" value="robotiq_2f_140"/>
+        <arg name="use_hard_limits" value="$(arg hard_limits)"/>
+        <arg name="start_rviz" value="false"/>
+        <arg name="ip_address" value="$(arg IP_ADDRESS)"/>
+        <arg name="robot_name" value="$(arg robot_name)"/>
+    </include>
+
+    <!--Launch the Kinova Vision Subsystem-->
+    <include file="$(find kinova_vision)/launch/kinova_vision_rgbd.launch">
+        <arg name="device" value="$(arg IP_ADDRESS)"/>
+    </include>
+
+    <!--Launch the realsense scene camera-->
+    <group if="$(arg use_scene_cam)">
+        <!-- <group ns="scene_camera"> -->
+        <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+            <arg name="camera" value="$(arg scene_camera_name)"/>
+            <arg name="filters" value="spatial,temporal,pointcloud"/>
+            <arg name="align_depth" value="true"/>
+            <arg name="initial_reset" value="true"/>
+            <arg name="depth_width" value="640"/>
+            <arg name="depth_height" value="480"/>
+            <arg name="depth_fps" value="15"/>
+        </include>
+        <!-- </group> -->
+
+        <!-- Loads the camera model -->
+        <param name="$(arg scene_camera_name)_robot_description" command="$(find xacro)/xacro '$(find realsense2_description)/urdf/test_d455_camera.urdf.xacro' robot_namespace:=$(arg scene_camera_name) use_nominal_extrinsics:=false "/>
+
+        <node name="$(arg scene_camera_name)_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+            <remap from="robot_description" to="$(arg scene_camera_name)_robot_description" />
+            <param name="tf_prefix" value="$(arg scene_camera_name)"/>
+        </node>
+
+        <!-- Create static transform between scene camera and robot base frame -->
+        <!-- <node pkg="tf" type="static_transform_publisher" name="cam2robot" args=" -0.6 -0.49 0.76 .5 .5 .2 /base_link /scene_camera_link 100" /> -->
+        <node pkg="tf" type="static_transform_publisher" name="robot2world" args=" 0 0 0 0 0 0 /world /base_link 100" />
+        <node pkg="tf" type="static_transform_publisher" name="cam2robot" args=" -0.64 -0.48 0.795 -.011613 .24784 .11587 .96178 /base_link /$(arg scene_camera_name)/base_link 100" />
+        <node pkg="tf" type="static_transform_publisher" name="camFix" args=" 0 0 0 0 0 0 /scene_camera/camera_link /scene_camera_link 100" />
+    </group>
+
+    <!--Start Rviz with Custom Config-->
+    <group if="$(arg use_rviz)">
+        <node name="rviz" pkg="rviz" type="rviz" ns="$(arg robot_name)" output="log" args="-f base_link -d $(find raf)/rviz/raf_kinova.rviz"/>
+    </group>
+
+    <group if="$(arg use_scene)">
+        <!-- Load .stl file for simple wheelchair -->
+        <include file="$(find object_visualizer)/launch/display.launch"/>
+
+        <!-- Load the planning scene collision object for the wheelchair-->
+        <node ns="$(arg robot_name)" name = "moveit_publish_scene_from_text" pkg= "moveit_ros_planning" type = "moveit_publish_scene_from_text" args= "$(arg scene_file)"/>
+    </group>
+
+
+</launch>

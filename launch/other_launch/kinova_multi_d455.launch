@@ -1,0 +1,70 @@
+
+<launch>
+
+    <arg name="IP_ADDRESS" default="137.148.209.35"/>
+    <arg name="robot_name" default="my_gen3"/>
+    <arg name="camera_name" default="scene_camera"/>
+
+    <!--Launch the Kortex Driver-->
+    <include file="$(find kortex_driver)/launch/kortex_driver.launch">
+        <arg name="dof" value="6"/>
+        <arg name="gripper" value="robotiq_2f_140"/>
+        <arg name="use_hard_limits" value="false"/>
+        <arg name="start_rviz" value="false"/>
+        <arg name="ip_address" value="$(arg IP_ADDRESS)"/>
+        <arg name="robot_name" value="$(arg robot_name)"/>
+    </include>
+
+    <!--Launch the Kinova Vision Subsystem-->
+    <include file="$(find kinova_vision)/launch/kinova_vision_rgbd.launch">
+        <arg name="device" value="$(arg IP_ADDRESS)"/>
+    </include>
+
+    <!-- Loads the camera model -->
+    <param name="$(arg camera_name)_robot_description" command="$(find xacro)/xacro '$(find realsense2_description)/urdf/test_d455_camera.urdf.xacro' robot_namespace:=$(arg camera_name) use_nominal_extrinsics:=false "/>
+
+    <!--Launch the realsense scene camera-->
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+        <arg name="camera" value="$(arg camera_name)"/>
+        <arg name="filters" value="spatial,temporal,pointcloud"/>
+        <arg name="align_depth" value="true"/>
+        <arg name="initial_reset" value="true"/>
+        <arg name="depth_width" value="640"/>
+        <arg name="depth_height" value="480"/>
+        <arg name="depth_fps" value="15"/>
+    </include>
+    <node name="$(arg camera_name)_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+        <remap from="robot_description" to="$(arg camera_name)_robot_description" />
+        <param name="tf_prefix" value="$(arg camera_name)"/>
+    </node>
+
+    <!-- Create static transform between scene camera and robot base frame -->
+    <!-- To manually adjust, comment out the transforms below and run adjust_scene_camera.py -->
+    <!-- <node pkg="raf" type="adjust_scene_camera.py" name="adjust_scene_camera" output="screen"/> -->
+    <node pkg="tf" type="static_transform_publisher" name="robot2world" args=" 0 0 0 0 0 0 /world /base_link 100" />
+    <node pkg="tf" type="static_transform_publisher" name="cam2robot" args=" -0.64 -0.48 0.795 -.011613 .24784 .11587 .96178 /base_link /$(arg camera_name)/base_link 100" />
+    <node pkg="tf" type="static_transform_publisher" name="camFix" args=" 0 0 0 0 0 0 /scene_camera/camera_link /scene_camera_link 100" />
+
+    <!-- Create static transform between pcl link and arm camera frame -->
+    <node pkg="tf" type="static_transform_publisher" name="pcl" args=" 0 0 0 3.14159265 0 0 /camera_color_frame /pcl_frame 100" />
+
+    <!-- Launch realsense camera with custom params-->
+    <!-- <group ns="camera">
+        <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+            <arg name="serial_no"             value="f0140143"/>
+            <arg name="json_file_path"        value="/home/labuser/L515 settings.json"/>
+            <arg name="depth_width"           value="1024"/>
+            <arg name="depth_height"          value="768"/>
+            <arg name="confidence_width"      value="1024"/>
+            <arg name="confidence_height"     value="768"/>
+            <arg name="infra_width"           value="1024"/>
+            <arg name="infra_height"          value="768"/>
+            <arg name="align_depth"           value="True"/>
+            <arg name="initial_reset"         value="True"/>
+            <arg name="enable_pointcloud"     value="True"/>
+        </include>
+    </group> -->
+
+    <!--Start Rviz with Custom Config-->
+    <node name="rviz" pkg="rviz" type="rviz" ns="$(arg robot_name)" output="log" args="-f base_link -d $(find raf)/rviz/kinova_perception.rviz"/>
+</launch>

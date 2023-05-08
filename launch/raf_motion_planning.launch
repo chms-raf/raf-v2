@@ -1,0 +1,19 @@
+
+<launch>
+    <!-- This launch file starts nodes for motion planning and action execution:
+            - Execute Action
+    -->
+
+    <arg name="robot_name" default="my_gen3"/>
+
+    <!-- Launch Action Execution Node -->
+    <node ns="$(arg robot_name)" name="execute_action" pkg="raf" type="execute_action.py" output="screen">
+        <remap from="/$(arg robot_name)/raf_state" to="/raf_state"/>
+        <remap from="/$(arg robot_name)/raf_action" to="/raf_action"/>
+        <remap from="/$(arg robot_name)/raf_state_request" to="/raf_state_request"/>
+        <remap from="/$(arg robot_name)/raf_message" to="/raf_message"/>
+        <remap from="/$(arg robot_name)/camera/depth_registered/points" to="/camera/depth_registered/points"/>
+        <remap from="/$(arg robot_name)/camera/depth_registered/sw_registered/image_rect" to="/camera/depth_registered/sw_registered/image_rect"/>
+    </node>
+
+</launch>

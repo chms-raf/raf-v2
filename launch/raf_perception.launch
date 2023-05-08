@@ -1,0 +1,37 @@
+
+<launch>
+    <!-- This launch file starts the perception subsystems:
+            - Arm Camera Network
+            - Scene Camera Network
+            - Facial Keypoint Detection
+    -->
+
+    <!-- Arguments List. Change in top-level launch file only.-->
+    <arg name="use_arm_network"     default="false"/>
+    <arg name="use_scene_network"   default="false"/>
+    <arg name="use_face_network"    default="false"/>
+
+    <!-- Launch the arm camera network -->
+    <group if="$(arg use_arm_network)">
+        <node pkg="aliencontrol" type="aliencontrol" name="aliencontrol_arm_cam_detections">
+            <param name="cmd" value="python3 ~/ros_ws/src/raf/scripts/arm_cam_detection.py"/>
+        </node>
+        <!-- <node pkg="aliencontrol" type="aliencontrol" name="aliencontrol_arm_cam_detections">
+            <param name="cmd" value="python3 ~/detectron2-deepsort-pytorch/raf_deepsort.py"/>
+        </node> -->
+    </group>
+
+    <!-- Launch the scene camera network script -->
+    <group if="$(arg use_scene_network)">
+        <node pkg="aliencontrol" type="aliencontrol" name="aliencontrol_scene_cam_detections">
+            <param name="cmd" value="python3 ~/ros_ws/src/raf/scripts/scene_cam_detection.py"/>
+        </node>
+    </group>
+
+    <!-- Launch face detection -->
+    <!-- <group if="$(arg use_face_network)">
+        <node name="face_detection" pkg="raf" type="face_detection"/>
+    </group> -->
+
+    
+</launch>

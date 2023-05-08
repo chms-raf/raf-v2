@@ -1,0 +1,13 @@
+<launch>
+
+    <!-- Robot namespace -->
+    <arg name="robot_name" default="my_gen3"/>
+    <arg name="start_delay_seconds" default="2"/>
+
+    <!-- Transform Arm Camera Point Cloud to Robot Base Frame -->
+    <!-- <node name="transform_cloud" pkg="raf" type="transform_cloud.py" ns="$(arg robot_name)" output="screen"/> -->
+
+    <!-- Launch the example in that namespace -->
+    <node name="gpd_test" pkg="raf" type="gpd_test.py" ns="$(arg robot_name)" output="screen" launch-prefix="bash -c 'sleep $(arg start_delay_seconds); $0 $@' "/>
+
+</launch>

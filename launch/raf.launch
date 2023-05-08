@@ -1,0 +1,43 @@
+
+<launch>
+    <!-- This is the top-level launch file for the RAF Project.
+    This launch file is responsible for launching the following subsystems:
+        - Robot - Kinova Gen3 and planning scene
+        - Perception - Deep learning object detection networks
+        - Motion Planning - Grasp pose generation and motion planning
+        - State Handler - Background flags to maintain system states and tasks
+        - Human Robot Interaction - Visual Servoing and Bite Transfer
+        - HMI - Human machine interface (HMI) including Talon and QtCreator project GUI
+        - Autonomy - Markov decision process
+    -->
+
+    <!-- Launch the Robot sub-launch file -->
+    <include file="$(find raf)/launch/raf_robot.launch">
+        <arg name="IP_ADDRESS"      default="137.148.209.35"/>
+        <arg name="robot_name"      default="my_gen3"/>
+        <arg name="use_rviz"        default="false"/>
+        <arg name="use_scene_cam"   default="false"/>
+        <arg name="use_scene"       default="false"/>
+        <arg name="hard_limits"     default="false"/>
+    </include>
+
+    <!-- Launch the Perception sub-launch file -->
+    <include file="$(find raf)/launch/raf_perception.launch">
+        <arg name="use_arm_network"     default="true"/>
+        <arg name="use_scene_network"   default="false"/>
+        <arg name="use_face_network"    default="false"/>           <!-- Not integrated yet. Still in virtual environment-->
+    </include>
+
+    <!-- Launch the GUI sub-launch file -->
+    <include file="$(find raf)/launch/raf_hmi.launch">
+        <arg name="start_talon"         default="true"/>
+        <arg name="start_qtcreator"     default="true"/>
+    </include>
+
+    <!-- Launch the State Handler sub-launch file -->
+    <include file="$(find raf)/launch/raf_state_handler.launch"/>
+
+    <!-- Launch the Motion Planning sub-launch file -->
+    <include file="$(find raf)/launch/raf_motion_planning.launch"/>
+
+</launch>

@@ -1,0 +1,10 @@
+
+<launch>
+    <!-- This launch file starts nodes for overall RAF state handling:
+            - State Handler
+    -->
+
+    <!-- Launch State Handler -->
+    <node name="state_handler" pkg="raf" type="state_handler.py"/>
+
+</launch>

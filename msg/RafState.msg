@@ -1,0 +1,11 @@
+std_msgs/Header header
+
+# Bool state for running detection inference
+bool enable_arm_detections
+bool enable_scene_detections
+bool enable_face_detections
+bool enable_visual_servoing
+bool visualize_face_detections
+string visualize_detections
+string view
+string system_state

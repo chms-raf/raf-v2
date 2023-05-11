@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 
-# This allows you to adjust the scene camera static transform incrementally
-# Written by Jack Schultz
+# This allows you to adjust the scene camera static transform incrementally to roughly align arm and scene camera point clouds.
+
+# The resulting transformation must be added manually to the raf_robot.launch launch file.
+
+# Author: Jack Schultz
 # Created 10/12/22
 
 from resource import RLIMIT_OFILE

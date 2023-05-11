@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 
+# This code is responsible for handling which camera stream to display on the GUI.
+# You can switch between the scene camera and the arm camera as well as control different
+# visualiztion options.
+
+# Author: Jack Schultz
+# Created 1/26/2023
+
 # import some common libraries
 import numpy as np
 import cv2

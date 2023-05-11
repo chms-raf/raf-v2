@@ -1,4 +1,6 @@
 <launch>
+    <!-- This launch file runs the pose-based visual servoing -->
+
     <!-- Robot namespace -->
     <arg name="robot_name" default="my_gen3"/>
     <arg name="start_delay_seconds" default="0"/>

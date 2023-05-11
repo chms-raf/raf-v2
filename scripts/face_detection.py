@@ -1,4 +1,16 @@
 #!/usr/bin/env python3
+
+# This script runs the face-alignment python package [https://github.com/1adrianb/face-alignment]
+
+# It also includes various methods for fitting an ellipse to the mouth keypoints
+# and detecting if the mouth is open or closed.
+
+# The current implementation requires this code to be in a virtual environment.
+# Future work could integrate this fully into the overall launch file structure.
+
+# Author: Jack Schultz
+# Created 1/26/2023
+
 import rospy
 import sys, time, cv2
 import numpy as np

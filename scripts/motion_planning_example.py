@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
-# This script executes actions selected by the user
+# This script is an example motion planning script for controlling the Kinova Gen3 using Moveit.
+
+# Author: Jack Schultz
+# Created 3/10/2023
 
 import rospy, sys
 import numpy as np

@@ -1,4 +1,12 @@
-#!/home/labuser/venv/detectron2/bin/python3
+#!/usr/bin/env python3
+
+# This code runs the detectron2 maskRCNN model inference on a live video stream.
+
+# In the current implementation, this script is trivial because both the arm and scene camera's use the same model.
+# Future work might be to train a specific model for the scene camera as well.
+
+# Author: Jack Schultz
+# Created 1/26/2023
 
 import numpy as np
 import rospy, os, sys, cv2

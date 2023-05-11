@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 
+# This code runs the detectron2 maskRCNN model inference on a live video stream.
+
+# Author: Jack Schultz
+# Created 1/26/2023
+
 import numpy as np
 import rospy, os, sys, cv2
 

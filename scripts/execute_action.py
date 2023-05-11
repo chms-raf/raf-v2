@@ -2,6 +2,14 @@
 
 # This script executes actions selected by the user
 
+# Currently only grasping and sipping are implemented
+# with visual servoing in progress
+
+# This code contains the largest need for improvement in this project and is very much a work in progress.
+
+# Author: Jack Schultz
+# Created 3/10/2023
+
 import rospy, sys, copy
 import numpy as np
 import cv2, time

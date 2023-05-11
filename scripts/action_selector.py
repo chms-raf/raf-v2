@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 
+# This code is a placeholder for implementing action execution once selected.
+# The idea is that the current state is sent to a Markov Decision Process (mdp) node
+# which determines the next appropriate action.
+
+# Currently not implemented.
+
+# Author: Jack Schultz
+# Created 3/10/2023
+
 import rospy, sys
 
 from raf.msg import RafState

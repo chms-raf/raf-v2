@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+# This code can be used to visualize detections, however, this code was ported to 
+# "cam_view_selection after scene camera was added, so no longer needed."
+
+# Author: Jack Schultz
+# Created: 1/26/2023
+
 # import some common libraries
 import numpy as np
 import cv2

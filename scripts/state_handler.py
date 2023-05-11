@@ -6,6 +6,9 @@
 #   ...sending commands to the GUI
 #   ...continuously publishing the RAF state for other nodes
 
+# Author: Jack Schultz
+# Created 3/10/2023
+
 import rospy, sys
 
 from raf.msg import RafState

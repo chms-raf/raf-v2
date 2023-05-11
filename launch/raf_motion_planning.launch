@@ -16,4 +16,6 @@
         <remap from="/$(arg robot_name)/camera/depth_registered/sw_registered/image_rect" to="/camera/depth_registered/sw_registered/image_rect"/>
     </node>
 
+    <!-- In the future, this launch file might house code relating to trajectory optimaztion, learning from demonstration, motion planning constraints, etc. -->
+
 </launch>

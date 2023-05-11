@@ -55,6 +55,7 @@
         </node>
 
         <!-- Create static transform between scene camera and robot base frame -->
+        <!-- These transforms were created using ../scripts/other_scripts/adjust_scene_camera.py and manually entered here. There are certainly better ways to do this. -->
         <!-- <node pkg="tf" type="static_transform_publisher" name="cam2robot" args=" -0.6 -0.49 0.76 .5 .5 .2 /base_link /scene_camera_link 100" /> -->
         <node pkg="tf" type="static_transform_publisher" name="robot2world" args=" 0 0 0 0 0 0 /world /base_link 100" />
         <node pkg="tf" type="static_transform_publisher" name="cam2robot" args=" -0.64 -0.48 0.795 -.011613 .24784 .11587 .96178 /base_link /$(arg scene_camera_name)/base_link 100" />

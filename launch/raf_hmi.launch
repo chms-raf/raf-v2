@@ -1,8 +1,9 @@
 
 <launch>
     <!-- This launch file starts nodes necessary for HMI event handling:
-            - Qt Creator Project
             - Talon
+            - Qt Creator GUI
+            - GUI visualization node
     -->
 
     <arg name="start_talon"         default="false"/>
@@ -11,18 +12,19 @@
     <!-- Launch Talon -->
     <group if="$(arg start_talon)">
         <node pkg="aliencontrol" type="aliencontrol" name="aliencontrol_talon">
-            <param name="cmd" value="gnome-terminal -- ~/talon/run.sh"/>
+            <param name="cmd" value="gnome-terminal -- ~/talon/run.sh"/>                                <!-- Launches Talon in new terminal -->
         </node>
     </group>
 
     <!-- Launch Qt Creator -->
     <group if="$(arg start_qtcreator)">
         <node pkg="aliencontrol" type="aliencontrol" name="aliencontrol_qt">
-            <!-- <param name="cmd" value="~/./Qt/Tools/QtCreator/bin/qtcreator"/> -->
-            <param name="cmd" value="~/./build-RAF_GUI-Desktop_Qt_5_15_2_GCC_64bit-Debug/RAF_GUI"/>
+            <!-- <param name="cmd" value="~/./Qt/Tools/QtCreator/bin/qtcreator"/> -->                   <!-- Editable version (Open /home/labuser/RAF_GUI/RAF_GUI.pro) -->
+            <param name="cmd" value="~/./build-RAF_GUI-Desktop_Qt_5_15_2_GCC_64bit-Debug/RAF_GUI"/>     <!-- Executable -->
         </node>
     </group>
 
-    <node name="cam_view_selection" pkg="raf" type="cam_view_selection.py"/>
+    <!-- Launch GUI Visualiztion Node -->
+    <node name="cam_view_selection" pkg="raf" type="cam_view_selection.py"/>                            <!-- Launches GUI visualization node -->
 
 </launch>

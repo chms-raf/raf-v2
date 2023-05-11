@@ -3,7 +3,8 @@
     <!-- This launch file starts the perception subsystems:
             - Arm Camera Network
             - Scene Camera Network
-            - Facial Keypoint Detection
+            - DeepSort
+            - Facial Keypoint Detection (Not integrated yet)
     -->
 
     <!-- Arguments List. Change in top-level launch file only.-->
@@ -13,9 +14,11 @@
 
     <!-- Launch the arm camera network -->
     <group if="$(arg use_arm_network)">
-        <node pkg="aliencontrol" type="aliencontrol" name="aliencontrol_arm_cam_detections">
+        <node pkg="aliencontrol" type="aliencontrol" name="aliencontrol_arm_cam_detections">        <!-- Requires AlienControl currently but should be integrated properly in the future -->
             <param name="cmd" value="python3 ~/ros_ws/src/raf/scripts/arm_cam_detection.py"/>
         </node>
+
+        <!-- DeepSort works but is very slow. Current sorting method is sufficient for now -->
         <!-- <node pkg="aliencontrol" type="aliencontrol" name="aliencontrol_arm_cam_detections">
             <param name="cmd" value="python3 ~/detectron2-deepsort-pytorch/raf_deepsort.py"/>
         </node> -->
@@ -23,12 +26,12 @@
 
     <!-- Launch the scene camera network script -->
     <group if="$(arg use_scene_network)">
-        <node pkg="aliencontrol" type="aliencontrol" name="aliencontrol_scene_cam_detections">
+        <node pkg="aliencontrol" type="aliencontrol" name="aliencontrol_scene_cam_detections">      <!-- Requires AlienControl currently but should be integrated properly in the future -->
             <param name="cmd" value="python3 ~/ros_ws/src/raf/scripts/scene_cam_detection.py"/>
         </node>
     </group>
 
-    <!-- Launch face detection -->
+    <!-- Launch face detection -->                                                                  <!-- Not integrated yet. Still in virtual environment -->
     <!-- <group if="$(arg use_face_network)">
         <node name="face_detection" pkg="raf" type="face_detection"/>
     </group> -->
